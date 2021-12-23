@@ -1,9 +1,15 @@
 import { createGlobalStyle } from "styled-components";
-import {ReactQueryDevtools} from "react-query/devtools"
+import { ReactQueryDevtools } from "react-query/devtools";
 import Router from "./Router";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
+@font-face {
+    font-family: 'establishRoomNo703OTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/establishRoomNo703OTF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -36,7 +42,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'establishRoomNo703OTF','Ubuntu', sans-serif;
   color: ${(props) => props.theme.textColor};
   
 }
@@ -60,17 +66,14 @@ a{
 }
 `;
 
-
-
-
 function App() {
   return (
     <>
       <GlobalStyle />
       <Router />
-      <ReactQueryDevtools initialIsOpen={true}/>
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
-  )
+  );
 }
 
 export default App;

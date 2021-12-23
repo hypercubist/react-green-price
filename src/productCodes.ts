@@ -1,0 +1,6 @@
+const FOOD_CROPS = "100";
+const VEGETABLES = "200";
+const SPECIAL_CROPS = "300";
+const FRUITS = "400";
+const LIVESTOCK_PRODUCTS = "500";
+const MARINE_PRODUCTS = "600";
