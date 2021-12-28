@@ -1,13 +1,18 @@
 import {BrowserRouter, Route, Switch} from "react-router-dom"
 import Home from "./routes/Home"
-import Menu1 from "./routes/Menu1";
+import Item from "./routes/Item";
+import ItemMenu from "./routes/ItemMenu";
+
 
 function Router(){
     return (
         <BrowserRouter>
             <Switch>
-                <Route path="/:productCode">
-                    <Menu1 />
+                <Route path="/:categoryCode/:itemCode/:kindCode">
+                    <Item />
+                </Route>
+                <Route path="/:categoryCode">
+                    <ItemMenu />
                 </Route>
                 <Route path="/">
                     <Home />
