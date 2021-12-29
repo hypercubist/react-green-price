@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import PRODUCT_LIST from "../productCodes";
 
 const Container = styled.main`
   background-color: ${(props) => props.theme.bgColor};
   max-width: 340px;
-  padding: 10px;
+  padding: 30px;
   margin: 0 auto;
 `;
 
@@ -27,18 +28,18 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 20px 10px;
 `;
 
 const ButtonIcon = styled.div`
   background-color: ${(props) => props.theme.boxColor};
   color: ${(props) => props.theme.textColor};
+  width: 120px;
+  height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  width: 120px;
-  height: 120px;
   border-radius: 5px;
   font-size: 3rem;
 `;
@@ -57,72 +58,78 @@ function Home() {
           <Button>
             <Link
               to={{
-                pathname: `/100`,
+                pathname: `/${PRODUCT_LIST[0].category_Code}`,
+                state: {name: PRODUCT_LIST[0].name}
               }}
             >
               <ButtonIcon>
                 <i className="fas fa-bread-slice"></i>
-                <ButtonText>식량작물</ButtonText>
+                <ButtonText>{PRODUCT_LIST[0].name}</ButtonText>
               </ButtonIcon>
             </Link>
           </Button>
           <Button>
             <Link
               to={{
-                pathname: `/200`,
+                pathname: `/${PRODUCT_LIST[1].category_Code}`,
+                state: {name: PRODUCT_LIST[1].name}
               }}
             >
               <ButtonIcon>
                 <i className="fas fa-carrot"></i>
-                <ButtonText>채소류</ButtonText>
+                <ButtonText>{PRODUCT_LIST[1].name}</ButtonText>
               </ButtonIcon>
             </Link>
           </Button>
           <Button>
             <Link
               to={{
-                pathname: `/300`,
+                pathname: `/${PRODUCT_LIST[2].category_Code}`,
+                state: {name: PRODUCT_LIST[2].name}
               }}
             >
               <ButtonIcon>
                 <i className="fas fa-cookie"></i>
-                <ButtonText>특용작물</ButtonText>
+                <ButtonText>{PRODUCT_LIST[2].name}</ButtonText>
               </ButtonIcon>
             </Link>
           </Button>
           <Button>
             <Link
               to={{
-                pathname: `/400`,
+                pathname: `/${PRODUCT_LIST[3].category_Code}`,
+                state: {name: PRODUCT_LIST[3].name}
               }}
             >
               <ButtonIcon>
                 <i className="fas fa-apple-alt"></i>
-                <ButtonText>과일류</ButtonText>
+                <ButtonText>{PRODUCT_LIST[3].name}</ButtonText>
               </ButtonIcon>
             </Link>
           </Button>
           <Button>
             <Link
               to={{
-                pathname: `/500`,
+                pathname: `/${PRODUCT_LIST[4].category_Code}`,
+                state: {name: PRODUCT_LIST[4].name}
               }}
             >
               <ButtonIcon>
                 <i className="fas fa-egg"></i>
-                <ButtonText>축산물</ButtonText>
+                <ButtonText>{PRODUCT_LIST[4].name}</ButtonText>
               </ButtonIcon>
             </Link>
           </Button>
           <Button>
             <Link
               to={{
-                pathname: `/600`,
+                pathname: `/${PRODUCT_LIST[5].category_Code}`,
+                state: {name: PRODUCT_LIST[5].name}
               }}
             >
               <ButtonIcon>
                 <i className="fas fa-fish"></i>
-                <ButtonText>수산물</ButtonText>
+                <ButtonText>{PRODUCT_LIST[5].name}</ButtonText>
               </ButtonIcon>
             </Link>
           </Button>

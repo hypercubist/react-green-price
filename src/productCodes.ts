@@ -1,4 +1,27 @@
-const FOOD_CROPS = [
+interface IList {
+   "item_category_name": string,
+   "item_code": number,
+   "item_name": string,
+   "kind_code": number,
+   "kind_name": string,
+   "wholesale_shipping_unit": string | null,
+   "wholesale_shipping_scale": number | null,
+   "retail_shipping_unit": string | null,
+   "retail_shipping_scale": number | null,
+   "organic_shipping_unit": string | null,
+   "organic_shipping_scale": number | null,
+   "wholesale_grade": string | null,
+   "retail_grade": string | null,
+   "organic_grade": string | null
+}
+
+interface IProductList {
+   category_Code : string,
+   name : string,
+   list : IList[],
+}
+
+const FOOD_CROPS  = [
     {
        "item_category_name": "식량작물",
        "item_code": 111,
@@ -3275,29 +3298,35 @@ const MARINE_PRODUCTS =  [
        "organic_grade": null
     }
  ]
- const PRODUCT_LIST = [
+ const PRODUCT_LIST:IProductList[] = [
     {
        category_Code : "100",
+       name : "식량작물",
        list : FOOD_CROPS,
     },
     {
       category_Code : "200",
+      name : "채소류",
       list : VEGETABLES,
    },
    {
       category_Code : "300",
+      name : "특용작물",
       list : SPECIAL_CROPS,
    },
    {
       category_Code : "400",
+      name : "과일류",
       list : FRUITS,
    },
    {
       category_Code : "500",
+      name : "축산물",
       list : LIVESTOCK_PRODUCTS,
    },
    {
       category_Code : "600",
+      name : "수산물",
       list : MARINE_PRODUCTS,
    },
  ]

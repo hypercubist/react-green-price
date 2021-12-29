@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchItem } from "../api";
 import ApexChart from "react-apexcharts";
@@ -7,18 +7,59 @@ import ApexChart from "react-apexcharts";
 const Container = styled.main`
   background-color: ${(props) => props.theme.bgColor};
   max-width: 340px;
-  padding: 10px;
+  padding: 30px;
   margin: 0 auto;
 `;
 
-const Ul = styled.ul``;
+const Header = styled.header`
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+`;
 
-const Li = styled.li``;
+const ChartMenuContainer = styled.div`
+    height: 4.4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin-top: 20px;
+    gap: 3px;
+    `;
+
+const ChartMenu = styled.div`
+    background-color: ${(props) => props.theme.boxColor};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding-top: 3px;
+`;
+
+const ChartInfo = styled.div`
+    background-color: ${(props) => props.theme.boxColor};
+    grid-column: 1 /-1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 5px;
+`;
+
+const ChartContainer =styled.div`
+    background-color: ${(props) => props.theme.boxColor};
+    margin-top: 3px;
+
+`;
 
 interface RouteParams {
   categoryCode: string;
   itemCode: string;
   kindCode: string;
+}
+
+interface RouteState{
+    name: string;
+    kind: string;
 }
 
 interface ItemData {
@@ -57,13 +98,26 @@ interface ItemObj {
 
 function Item() {
   const { categoryCode, itemCode, kindCode } = useParams<RouteParams>();
+  const { state } = useLocation<RouteState>();
   const { isLoading, data: priceData } = useQuery<ItemData>(
     [itemCode, kindCode],
     () => fetchItem(categoryCode, itemCode, kindCode)
   );
-
+    // console.log(priceData?.data.error_code); 데이터가 없는 경우 에러코드가 undefined
   return (
     <Container>
+        <Header>
+            <h1>{`${state.name} / ${state.name===state.kind ? "일반" : state.kind}`}</h1>
+        </Header>
+        <ChartMenuContainer>
+            <ChartMenu>소매</ChartMenu>
+            <ChartMenu>도매</ChartMenu>
+            <ChartMenu>유기농</ChartMenu>
+            <ChartInfo>{}</ChartInfo>
+        </ChartMenuContainer>
+        <ChartContainer>
+        </ChartContainer>
+
       {isLoading ? (
         <h1>Loading...</h1>
       ) : (
