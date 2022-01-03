@@ -1,8 +1,32 @@
 import { useQuery } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  Route,
+  Switch,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 import { fetchItem } from "../api";
 import ApexChart from "react-apexcharts";
+import { IProduct, PRODUCT_LIST } from "../productCodes";
+
+const dummyProduct: IProduct = {
+  item_category_name: "데이터없음",
+  item_code: 0,
+  item_name: "데이터없음",
+  kind_code: 0,
+  kind_name: "데이터없음",
+  wholesale_shipping_unit: null,
+  wholesale_shipping_scale: null,
+  retail_shipping_unit: null,
+  retail_shipping_scale: null,
+  organic_shipping_unit: null,
+  organic_shipping_scale: null,
+  wholesale_grade: null,
+  retail_grade: null,
+  organic_grade: null,
+};
 
 const Container = styled.main`
   background-color: ${(props) => props.theme.bgColor};
@@ -12,54 +36,50 @@ const Container = styled.main`
 `;
 
 const Header = styled.header`
-    display: flex;
-    justify-content: center;
-    font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  font-size: 1.5rem;
 `;
 
 const ChartMenuContainer = styled.div`
-    height: 4.4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    margin-top: 20px;
-    gap: 3px;
-    `;
+  height: 4.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  margin-top: 20px;
+  gap: 3px;
+`;
 
-const ChartMenu = styled.div`
-    background-color: ${(props) => props.theme.boxColor};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    padding-top: 3px;
+const ChartMenu = styled.div<{ isActive: boolean }>`
+  background-color: ${(props) => props.theme.boxColor};
+  color: ${(props) =>
+    props.isActive ? props.theme.textColor : props.theme.accentColor2};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding-top: 3px;
 `;
 
 const ChartInfo = styled.div`
-    background-color: ${(props) => props.theme.boxColor};
-    grid-column: 1 /-1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0 10px;
-    border-radius: 5px;
+  background-color: ${(props) => props.theme.boxColor};
+  grid-column: 1 /-1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 5px;
 `;
 
-const ChartContainer =styled.div`
-    background-color: ${(props) => props.theme.boxColor};
-    margin-top: 3px;
-
+const ChartContainer = styled.div`
+  background-color: ${(props) => props.theme.boxColor};
+  margin-top: 3px;
 `;
 
 interface RouteParams {
   categoryCode: string;
   itemCode: string;
   kindCode: string;
-}
-
-interface RouteState{
-    name: string;
-    kind: string;
 }
 
 interface ItemData {
@@ -98,25 +118,77 @@ interface ItemObj {
 
 function Item() {
   const { categoryCode, itemCode, kindCode } = useParams<RouteParams>();
-  const { state } = useLocation<RouteState>();
+  const product =
+    PRODUCT_LIST.find((data) => {
+      return data.category_Code === categoryCode;
+    })?.list.find((data) => {
+      return (
+        data.item_code === Number(itemCode) &&
+        data.kind_code === Number(kindCode)
+      );
+    }) ?? dummyProduct; //dummy일 때 처리
   const { isLoading, data: priceData } = useQuery<ItemData>(
     [itemCode, kindCode],
-    () => fetchItem(categoryCode, itemCode, kindCode)
+    () => fetchItem(categoryCode, product)
   );
-    // console.log(priceData?.data.error_code); 데이터가 없는 경우 에러코드가 undefined
+  const retailMatch = useRouteMatch(
+    "/:categoryCode/:itemCode/:kindCode/retail"
+  );
+  const wholesaleMatch = useRouteMatch(
+    "/:categoryCode/:itemCode/:kindCode/wholesale"
+  );
+  const organicMatch = useRouteMatch(
+    "/:categoryCode/:itemCode/:kindCode/organic"
+  );
+
   return (
     <Container>
-        <Header>
-            <h1>{`${state.name} / ${state.name===state.kind ? "일반" : state.kind}`}</h1>
-        </Header>
-        <ChartMenuContainer>
-            <ChartMenu>소매</ChartMenu>
-            <ChartMenu>도매</ChartMenu>
-            <ChartMenu>유기농</ChartMenu>
-            <ChartInfo>{}</ChartInfo>
-        </ChartMenuContainer>
-        <ChartContainer>
-        </ChartContainer>
+      <Header>
+        <h1>{`${product.item_name} / ${
+          product.item_name === product.kind_name ? "일반" : product.kind_name
+        }`}</h1>
+      </Header>
+      <ChartMenuContainer>
+        <ChartMenu isActive={retailMatch !== null}>
+          <Link
+            to={{ pathname: `/${categoryCode}/${itemCode}/${kindCode}/retail` }}
+          >
+            소매
+          </Link>
+        </ChartMenu>
+        <ChartMenu isActive={wholesaleMatch !== null}>
+          <Link
+            to={{
+              pathname: `/${categoryCode}/${itemCode}/${kindCode}/wholesale`,
+            }}
+          >
+            도매
+          </Link>
+        </ChartMenu>
+        <ChartMenu isActive={organicMatch !== null}>
+          <Link
+            to={{
+              pathname: `/${categoryCode}/${itemCode}/${kindCode}/organic`,
+            }}
+          >
+            유기농
+          </Link>
+        </ChartMenu>
+        <ChartInfo>{}</ChartInfo>
+      </ChartMenuContainer>
+      <ChartContainer>
+        <Switch>
+          <Route path={"/:categoryCode/:itemCode/:kindCode/retail"}>
+            retail
+          </Route>
+          <Route path={"/:categoryCode/:itemCode/:kindCode/wholesale"}>
+            wholesale
+          </Route>
+          <Route path={"/:categoryCode/:itemCode/:kindCode/organic"}>
+            organic
+          </Route>
+        </Switch>
+      </ChartContainer>
 
       {isLoading ? (
         <h1>Loading...</h1>

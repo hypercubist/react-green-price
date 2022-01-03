@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import PRODUCT_LIST from "../productCodes";
+import {PRODUCT_LIST} from "../productCodes";
 
 const Container = styled.main`
   background-color: ${(props) => props.theme.bgColor};
